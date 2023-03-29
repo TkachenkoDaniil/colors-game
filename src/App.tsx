@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+
+import ColorLegend from './components/ColorLegend'
 import './App.css';
 
-function App() {
+interface GameSettings {
+  userId: string,
+  width: number,
+  height: number,
+  maxMoves: number,
+  target: Array<number>
+}
+
+const mockedLegend: GameSettings = {
+  userId: '2afb13',
+  width: 10,
+  height: 4,
+  maxMoves: 8,
+  target: [0, 255, 255],
+};
+
+const App = () => {
+  const [gameSettings, setGameSettings] = useState<GameSettings>();
+
+  useEffect(() => {
+    setGameSettings(mockedLegend);
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ColorLegend
+          userId={gameSettings?.userId}
+          maxMoves={gameSettings?.maxMoves}
+          target={gameSettings?.target}
+      ></ColorLegend>
     </div>
   );
 }
