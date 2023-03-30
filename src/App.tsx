@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 
-import ColorLegend from './components/ColorLegend'
+import ColorLegend from './components/ColorLegend';
+import GameMatrix from './components/GameMatrix';
 import './App.css';
 
 interface GameSettings {
@@ -13,8 +14,8 @@ interface GameSettings {
 
 const mockedLegend: GameSettings = {
   userId: '2afb13',
-  width: 10,
-  height: 4,
+  width: 3,
+  height: 3,  
   maxMoves: 8,
   target: [0, 255, 255],
 };
@@ -28,13 +29,23 @@ const App = () => {
 
   return (
     <div className="App">
-      <ColorLegend
-          userId={gameSettings?.userId}
-          maxMoves={gameSettings?.maxMoves}
-          target={gameSettings?.target}
-      ></ColorLegend>
+      {
+        gameSettings != null && (
+          <>
+            <ColorLegend
+              userId={gameSettings.userId}
+              maxMoves={gameSettings.maxMoves}
+              target={gameSettings.target}
+            ></ColorLegend>
+            <GameMatrix
+              height={gameSettings.height}
+              width={gameSettings.width}
+            />
+          </>
+        )
+      }
     </div>
   );
 }
 
-export default App;
+export default memo(App);

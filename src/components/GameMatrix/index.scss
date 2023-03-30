@@ -1,0 +1,11 @@
+.matrix {
+  & > :not(:first-child) {
+    margin-top: 5px;
+  }
+  &__row {
+    display: flex;
+    & > :not(:first-child) {
+      margin-left: 5px;
+    }
+  }
+}
