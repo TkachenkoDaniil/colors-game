@@ -1,13 +1,33 @@
 import { memo } from 'react';
 
-import { TileProps } from '../../types'
-import './index.scss'
+import { TileInfo, TileCoordinates } from '../types';
+import './index.scss';
 
-const Tile = ({ color, formType }: TileProps) => {
+interface TileProps extends TileInfo {
+  onClick?(e: any): void
+}
+
+const Tile = ({ color, formType, onClick, position }: TileProps) => {
+
+  const onTileClick = (e: any) => {
+    if (onClick) onClick(position);
+  };
 
   if (!color || !formType) return null;
   return (
-    <div className={`tile__${formType}`} style={{ background: `rgb(${color[0]}, ${color[1]}, ${color[2]})` }}></div>
+    <>
+      {
+        formType === 'none' ? (
+          <div style={{ width: '20px', height: '20px' }}></div>
+        ) : (
+          <div
+            className={`tile__${formType}`}
+            style={{ background: `rgb(${color[0]}, ${color[1]}, ${color[2]})` }}
+            onClick={(e) => onTileClick(e)}
+          />
+        )
+      }
+    </>
   );
 };
 
