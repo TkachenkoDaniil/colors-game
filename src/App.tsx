@@ -15,7 +15,7 @@ interface GameSettings {
 const mockedLegend: GameSettings = {
   userId: '2afb13',
   width: 3,
-  height: 2,  
+  height: 3,  
   maxMoves: 8,
   target: [0, 0, 255],
 };

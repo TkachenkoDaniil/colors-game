@@ -30,28 +30,29 @@ const GameMatrix = ({ height, width }: MatrixSize) => {
   const [cellsData, setCellsData] = useState(() => initializeMatrix(height, width));
   const [rgbCounter, setRgbCounter] = useState([[255, 0, 0], [0, 255, 0], [0, 0, 255]]);
 
-  console.log('height', height)
-  console.log('width', width)
-  console.log('cellsData', cellsData)
+  const calculateTileColor = (tileColor: Array<number>, distance: number, color: Array<number>) => {
+    const delimiter = (height + 1 - distance)/(height + 1);
+    return [color[0] * delimiter, color[1] * delimiter, color[2]* delimiter];
+  }
 
   const onTileClick = useCallback(({ row, column }: TileCoordinates) => {
 
-    console.log('row', row)
-    console.log('column', column)
-
-
     if (column === 0 || column === width + 1) {
-      // change row color
       const primaryRow = cellsData[row];
-      console.log('primaryRow', primaryRow)
       const color = rgbCounter[0];
-      const temp = primaryRow.map((tile, index) => {
+      const coloredRow = primaryRow.map((tile, index) => {
         const distance = column === 0 ? index : column - index;
-        console.log('tile', tile)
-
+        return {
+          ...tile,
+          color: calculateTileColor(tile.color, distance, color),
+        }
       })
+      cellsData[row] = coloredRow;
+      setCellsData([...cellsData])
+      rgbCounter.shift()
+      setRgbCounter([...rgbCounter]);
     }
-    // change column color
+    // todo: change column color
 
   }, []);
 
@@ -70,7 +71,7 @@ const GameMatrix = ({ height, width }: MatrixSize) => {
                       formType={item.formType}
                       key={`${rowNumber}${columnNumber}`}
                       position={item.position}
-                      onClick={onTileClick}
+                      onClick={item.formType === 'circle' ? onTileClick : undefined}
                     />
                   )
                 })
